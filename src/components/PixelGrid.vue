@@ -22,10 +22,17 @@ fetchPixels().then((data) => {
 const pixelList = ref(grille);
 console.log(pixelList.value); */
 
+
+
 const pixelList = ref(grillejson);
 console.log(pixelList.value);
 
 const PIXELSIZE = 20;
+
+handleClick = (event) => {
+  const color = '#ff0000';
+  event.target.style.backgroundColor = color;
+}
 
 
 </script>
@@ -33,13 +40,13 @@ const PIXELSIZE = 20;
 <template>
   <div class="pixel-grid">
     <tr v-for="row in pixelList">
-      <td class="pixel" v-for="pixel in row" :style="{backgroundColor: pixel.color, width: PIXELSIZE + 'px', height: PIXELSIZE + 'px'}"></td>
+      <td @click="handleClick" class="pixel" v-for="pixel in row" :style="{backgroundColor: pixel.color, width: PIXELSIZE + 'px', height: PIXELSIZE + 'px'}"></td>
     </tr>
   </div>
 </template>
 
 <style scoped>
  .pixel {
-  stroke-width: 1px;
+  border: 0.5px solid black;
  }
 </style>

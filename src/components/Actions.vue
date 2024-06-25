@@ -1,27 +1,40 @@
 <script setup>
 import { ref, watch } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 import { addColor, removeColor, actualColor } from '../stores/actualColor';
 
-const zoom = ref(0.5);
-const color = ref('#ff0000');
+const props = defineProps({
+    color: {
+        type: String,
+    },
+    zoom: {
+        type: Number,
+    }
+});
 
-watch (color, (newValue, oldValue) => {
-  console.log('new: ', newValue, 'old: ', oldValue);
-  addColor({color: newValue});
-  removeColor(oldValue);
-})
+const emits = defineEmits(['update-color', 'update-zoom']);
+
+const updateColor = (newColor) => {
+  emits('update-color', newColor);
+};
+
+const updateZoom = (newZoom) => {
+  emits('update-zoom', newZoom);
+};
 
 const handleZoomIn = () => {
-  if(zoom.value <= 1.9) {
-    zoom.value += 0.1;
-    console.log(zoom.value);
+  console.log(props.zoom);
+  if(props.zoom <= 1.9) {
+    props.zoom += 0.1;
+    updateZoom(props.zoom);   
   }
 }
 
 const handleZoomOut = () => {
-  if(zoom.value >= 0.3) {
-    zoom.value -= 0.1;
-    console.log(zoom.value);
+  console.log(props.zoom);
+  if(props.zoom >= 0.3) {
+    props.zoom -= 0.1;
+    updateZoom(props.zoom);
   }
 }
 
@@ -30,13 +43,10 @@ const handleZoomOut = () => {
 
 <template>
 
-<input type="color" v-model="color"/>
+<input type="color" :value="props.color" @input="updateColor($event.target.value)" />
+<!-- <input type="color" v-model="color"/> -->
 <button @click="handleZoomIn">Zoom in</button>
 <button @click="handleZoomOut">Zoom out</button>
-
-
-
-
 
 </template>
 
